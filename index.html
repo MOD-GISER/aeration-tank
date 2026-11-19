@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Aeration Tank Viewer</title>
+<style>
+:root{--bg1:#dfe7ee;--bg2:#9fb3c4;--panel:#ffffffee;--ink:#14202b;--mut:#5b6b7a;--line:#d3dbe3;--acc:#1f6feb;--pop:#fffffff5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#1c2733;--bg2:#0f161d;--panel:#16202bee;--ink:#e8eef4;--mut:#9fb0c0;--line:#2b3a49;--acc:#5aa2ff;--pop:#16202bf5;color-scheme:dark}}
+:root[data-theme="dark"]{--bg1:#1c2733;--bg2:#0f161d;--panel:#16202bee;--ink:#e8eef4;--mut:#9fb0c0;--line:#2b3a49;--acc:#5aa2ff;--pop:#16202bf5;color-scheme:dark}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background-color:var(--bg2);font:14px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:linear-gradient(var(--bg1),var(--bg2));overflow:hidden;-webkit-text-size-adjust:100%}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}
+#labs{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.lab{position:absolute;left:0;top:0;font:600 11px system-ui,sans-serif;pointer-events:none;white-space:nowrap}
+.lab.g{color:#fff;background:#d8334a;border-radius:10px;min-width:20px;padding:1px 6px;text-align:center}
+.lab.c{color:#1b1b1b;background:#ffd400;border-radius:4px;padding:1px 5px}
+.lab.m1,.lab.m0{width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px #1f6feb}
+.lab.m0{box-shadow:0 0 0 2px #888;opacity:.8}
+#top{position:fixed;left:12px;top:12px;right:12px;display:flex;gap:10px;align-items:flex-start;pointer-events:none}
+#brand{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 12px;pointer-events:auto;backdrop-filter:blur(6px);max-width:min(520px,60vw)}
+#ttl{font-weight:650;font-size:15px}#sub{color:var(--mut);font-size:12px}
+#tools{margin-left:auto;display:flex;gap:6px;pointer-events:auto;flex-wrap:wrap;justify-content:flex-end}
+button{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;backdrop-filter:blur(6px)}
+button:hover{border-color:var(--acc)}
+#panel{position:fixed;right:12px;top:68px;width:300px;max-height:calc(100% - 120px);overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px;backdrop-filter:blur(8px)}
+#panel.hide{display:none}
+h3{margin:12px 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut)}h3:first-child{margin-top:0}
+.ly{display:flex;align-items:center;gap:8px;padding:3px 0;cursor:pointer}.ly i{width:14px;height:14px;border-radius:4px;border:1px solid #0003;flex:none}.ly span{flex:1}
+.opt{display:flex;align-items:center;gap:8px;padding:3px 0}.opt input[type=range]{flex:1}.opt b{min-width:44px;text-align:right;font-variant-numeric:tabular-nums}
+table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums}th,td{padding:2px 4px;text-align:right;border-bottom:1px solid var(--line)}th:first-child,td:first-child{text-align:left}
+.small{color:var(--mut);font-size:12px}
+.gr{display:flex;gap:6px}.gr input{flex:1;min-width:0;font:inherit;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+#pop{position:fixed;display:none;width:250px;background:var(--pop);border:1px solid var(--line);border-radius:12px;padding:10px 12px;box-shadow:0 8px 28px #0003;font-size:13px;backdrop-filter:blur(8px)}
+#pop .ph{display:flex;justify-content:space-between;gap:8px;margin-bottom:6px}#pop .pn{font-weight:650;line-height:1.25}#pop .pl{color:var(--mut);font-size:12px}
+#pop .ph button{padding:0 8px;line-height:22px;height:24px;border-radius:8px;flex:none}
+#pop .row{display:flex;justify-content:space-between;gap:10px;padding:2px 0;font-variant-numeric:tabular-nums}#pop .row span{color:var(--mut)}#pop .row.s{font-size:12px}
+#pop .sep{height:1px;background:var(--line);margin:6px 0}#pop .btns{display:flex;gap:6px;margin-top:8px}#pop .btns button{flex:1;padding:5px 6px;font-size:12px}#pop .pe{color:var(--mut);font-size:11px;margin-top:6px}
+#hov{position:fixed;left:12px;bottom:12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:12px;font-variant-numeric:tabular-nums;max-width:calc(100% - 24px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:700px){#panel{top:auto;bottom:56px;right:8px;left:8px;width:auto;max-height:46%}#brand{max-width:none;flex:1}#sub{display:none}#top{left:8px;right:8px;top:8px;flex-wrap:wrap}#pop{width:220px}}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas><div id="labs"></div>
+<div id="top">
+  <div id="brand"><div id="ttl"></div><div id="sub"></div></div>
+  <div id="tools"><button id="b3">3D</button><button id="bp">Plan</button><button id="bf">Fit</button><button id="tg">Layers ▾</button></div>
+</div>
+<div id="panel">
+  <h3>Layers</h3><div id="layers"></div>
+  <h3>Display</h3>
+  <label class="opt"><input type="checkbox" id="orth"><span>Orthographic camera</span></label>
+  <div class="opt"><span>Vertical exaggeration</span><input type="range" id="ze" min="1" max="6" step="0.5"><b id="zev"></b></div>
+  <label class="opt"><input type="checkbox" id="cut"><span>Cut at level (Z)</span></label>
+  <div class="opt"><input type="range" id="cz" min="-0.5" max="9" step="0.05"><b id="czv"></b></div>
+  <h3>Coordinates</h3>
+  <label class="opt"><input type="checkbox" id="sc"><span>Fit scale to survey points</span></label>
+  <div class="small" id="geo"></div><div id="ctl"></div>
+  <div class="small" style="margin-top:4px">Click any point of the model for E, N, Z. Click a second point for distance. Z = drawing level (raft top +1.15).</div>
+  <h3>Go to point</h3>
+  <div class="gr"><input id="gE" placeholder="Easting" inputmode="decimal"><input id="gN" placeholder="Northing" inputmode="decimal"><button id="go">Go</button></div><div class="small" id="gmsg"></div>
+</div>
+<div id="pop"></div>
+<div id="hov">E – , N – , Z –</div>
+<script src="config.js"></script>
+<script src="data.js"></script>
+<script src="viewer.js"></script>
+</body>
+</html>
