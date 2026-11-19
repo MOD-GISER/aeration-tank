@@ -19,7 +19,7 @@ body{background-color:var(--bg2);font:14px/1.4 system-ui,-apple-system,"Segoe UI
 .lab.m0{box-shadow:0 0 0 2px #888;opacity:.8}
 #top{position:fixed;left:12px;top:12px;right:12px;display:flex;gap:10px;align-items:flex-start;pointer-events:none}
 #brand{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 12px;pointer-events:auto;backdrop-filter:blur(6px);max-width:min(520px,60vw)}
-#ttl{font-weight:650;font-size:15px}#sub{color:var(--mut);font-size:12px}
+#team{font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);margin-bottom:2px}#ttl{font-weight:650;font-size:15px}#sub{color:var(--mut);font-size:12px}
 #tools{margin-left:auto;display:flex;gap:6px;pointer-events:auto;flex-wrap:wrap;justify-content:flex-end}
 button{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;backdrop-filter:blur(6px)}
 button:hover{border-color:var(--acc)}
@@ -43,7 +43,7 @@ table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:ta
 <body>
 <canvas id="c"></canvas><div id="labs"></div>
 <div id="top">
-  <div id="brand"><div id="ttl"></div><div id="sub"></div></div>
+  <div id="brand"><div id="team"></div><div id="ttl"></div><div id="sub"></div></div>
   <div id="tools"><button id="b3">3D</button><button id="bp">Plan</button><button id="bf">Fit</button><button id="tg">Layers ▾</button></div>
 </div>
 <div id="panel">
@@ -64,6 +64,7 @@ table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:ta
 <div id="hov">E – , N – , Z –</div>
 <script>// Appearance / behaviour of the viewer. Edit freely – no other file needs to change.
 window.TANK_CONFIG = {
+  team: 'Alex West Survey Team',
   title: 'Alex West – Aeration Tank',
   subtitle: 'Preliminary model – verify against the signed drawings before setting out',
   defaults: { scaleToSurvey: true, zExag: 2, cutOn: false, view: '3d', ortho: false },
@@ -307,7 +308,7 @@ $('go').onclick=()=>{const E=parseFloat($('gE').value),N=parseFloat($('gN').valu
  if(bel===null){$('gmsg').textContent='Point is outside the model footprint';cam.tx=w[0];cam.ty=w[1];req();return;}
  $('gmsg').textContent='';const h={w:[w[0],w[1],best],el:bel};picks=[];showPick(h);cam.tx=w[0];cam.ty=w[1];cam.tz=best;cam.dist=Math.min(cam.dist,120);req();};
 $('tg').onclick=()=>$('panel').classList.toggle('hide');
-$('ttl').textContent=C.title;$('sub').textContent=C.subtitle;
+$('team').textContent=C.team;document.title=C.team+' – '+C.title;$('ttl').textContent=C.title;$('sub').textContent=C.subtitle;
 
 window.addEventListener('resize',req);window.addEventListener('keydown',e=>{if(e.key==='Escape'){picks=[];selEl=null;renderPop();req();}});
 if(window.innerWidth<700)$('panel').classList.add('hide');

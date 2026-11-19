@@ -19,7 +19,7 @@ body{background-color:var(--bg2);font:14px/1.4 system-ui,-apple-system,"Segoe UI
 .lab.m0{box-shadow:0 0 0 2px #888;opacity:.8}
 #top{position:fixed;left:12px;top:12px;right:12px;display:flex;gap:10px;align-items:flex-start;pointer-events:none}
 #brand{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 12px;pointer-events:auto;backdrop-filter:blur(6px);max-width:min(520px,60vw)}
-#ttl{font-weight:650;font-size:15px}#sub{color:var(--mut);font-size:12px}
+#team{font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);margin-bottom:2px}#ttl{font-weight:650;font-size:15px}#sub{color:var(--mut);font-size:12px}
 #tools{margin-left:auto;display:flex;gap:6px;pointer-events:auto;flex-wrap:wrap;justify-content:flex-end}
 button{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;backdrop-filter:blur(6px)}
 button:hover{border-color:var(--acc)}
@@ -43,7 +43,7 @@ table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:ta
 <body>
 <canvas id="c"></canvas><div id="labs"></div>
 <div id="top">
-  <div id="brand"><div id="ttl"></div><div id="sub"></div></div>
+  <div id="brand"><div id="team"></div><div id="ttl"></div><div id="sub"></div></div>
   <div id="tools"><button id="b3">3D</button><button id="bp">Plan</button><button id="bf">Fit</button><button id="tg">Layers ▾</button></div>
 </div>
 <div id="panel">

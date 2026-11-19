@@ -1,5 +1,6 @@
 // Appearance / behaviour of the viewer. Edit freely – no other file needs to change.
 window.TANK_CONFIG = {
+  team: 'Alex West Survey Team',
   title: 'Alex West – Aeration Tank',
   subtitle: 'Preliminary model – verify against the signed drawings before setting out',
   defaults: { scaleToSurvey: true, zExag: 2, cutOn: false, view: '3d', ortho: false },

@@ -222,7 +222,7 @@ $('go').onclick=()=>{const E=parseFloat($('gE').value),N=parseFloat($('gN').valu
  if(bel===null){$('gmsg').textContent='Point is outside the model footprint';cam.tx=w[0];cam.ty=w[1];req();return;}
  $('gmsg').textContent='';const h={w:[w[0],w[1],best],el:bel};picks=[];showPick(h);cam.tx=w[0];cam.ty=w[1];cam.tz=best;cam.dist=Math.min(cam.dist,120);req();};
 $('tg').onclick=()=>$('panel').classList.toggle('hide');
-$('ttl').textContent=C.title;$('sub').textContent=C.subtitle;
+$('team').textContent=C.team;document.title=C.team+' – '+C.title;$('ttl').textContent=C.title;$('sub').textContent=C.subtitle;
 
 window.addEventListener('resize',req);window.addEventListener('keydown',e=>{if(e.key==='Escape'){picks=[];selEl=null;renderPop();req();}});
 if(window.innerWidth<700)$('panel').classList.add('hide');
