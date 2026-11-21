@@ -38,13 +38,23 @@ table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:ta
 #pop .sep{height:1px;background:var(--line);margin:6px 0}#pop .btns{display:flex;gap:6px;margin-top:8px}#pop .btns button{flex:1;padding:5px 6px;font-size:12px}#pop .pe{color:var(--mut);font-size:11px;margin-top:6px}
 #hov{position:fixed;left:12px;bottom:12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:12px;font-variant-numeric:tabular-nums;max-width:calc(100% - 24px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media (max-width:700px){#panel{top:auto;bottom:56px;right:8px;left:8px;width:auto;max-height:46%}#brand{max-width:none;flex:1}#sub{display:none}#top{left:8px;right:8px;top:8px;flex-wrap:wrap}#pop{width:220px}}
+body.sec #panel{top:112px;max-height:calc(100% - 160px)}
+button.on{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc) inset}
+#snapm{position:fixed;left:0;top:0;display:none;pointer-events:none;width:16px;height:16px;z-index:5}
+#snapm.kEndpoint{border:2px solid #17b26a;background:#17b26a22}
+#snapm.kCenter{border:2px solid #17b26a;border-radius:50%;background:#17b26a22}
+#snapm.kMidpoint{width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-bottom:16px solid #17b26a}
+#snapm.kOnedge{border:0;background:linear-gradient(45deg,transparent 43%,#17b26a 43% 57%,transparent 57%),linear-gradient(-45deg,transparent 43%,#17b26a 43% 57%,transparent 57%)}
+#snapm::after{content:attr(data-t);position:absolute;left:18px;top:-18px;font:600 11px system-ui,sans-serif;color:#0b6b3f;background:#fffd;border-radius:4px;padding:0 4px;white-space:nowrap}
+.lab.s{color:#fff;background:#ff7a00;border-radius:4px;padding:1px 6px}
+.lab.gps{width:16px;height:16px;border-radius:50%;background:#1f6feb;border:3px solid #fff;box-shadow:0 0 0 3px #1f6feb66}
 </style>
 </head>
 <body>
 <canvas id="c"></canvas><div id="labs"></div>
 <div id="top">
   <div id="brand"><div id="team"></div><div id="ttl"></div><div id="sub"></div></div>
-  <div id="tools"><button id="b3">3D</button><button id="bp">Plan</button><button id="bf">Fit</button><button id="tg">Layers ▾</button></div>
+  <div id="tools"><button id="b3">3D</button><button id="bp">Plan</button><button id="bf">Fit</button><button id="bsn" class="on" title="Snap to endpoints, midpoints, centres and edges">Snap</button><button id="bsec" title="Draw a section line">Section</button><button id="bloc" title="Show my position on the model">My location</button><button id="tg">Layers ▾</button></div>
 </div>
 <div id="panel">
   <h3>Layers</h3><div id="layers"></div>
@@ -54,9 +64,11 @@ table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:ta
   <label class="opt"><input type="checkbox" id="cut"><span>Cut at level (Z)</span></label>
   <div class="opt"><input type="range" id="cz" min="-0.5" max="9" step="0.05"><b id="czv"></b></div>
   <h3>Coordinates</h3>
-  <label class="opt"><input type="checkbox" id="sc"><span>Fit scale to survey points</span></label>
   <div class="small" id="geo"></div><div id="ctl"></div>
   <div class="small" style="margin-top:4px">Click any point of the model for E, N, Z. Click a second point for distance. Z = drawing level (raft top +1.15).</div>
+  <h3>Snap</h3><div id="snapopts"></div><div class="small">Hover or tap near a corner, centre, edge middle or edge: the marker shows the exact point and its E, N, Z.</div>
+  <h3>Section</h3><div id="secui"></div>
+  <h3>My location</h3><div class="gr"><button id="gpsb">Show / hide</button><label class="opt" style="flex:1"><input type="checkbox" id="gpsf"><span>Follow me</span></label></div><div class="small" id="gpsm"></div>
   <h3>Go to point</h3>
   <div class="gr"><input id="gE" placeholder="Easting" inputmode="decimal"><input id="gN" placeholder="Northing" inputmode="decimal"><button id="go">Go</button></div><div class="small" id="gmsg"></div>
 </div>
@@ -65,5 +77,6 @@ table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:ta
 <script src="config.js"></script>
 <script src="data.js"></script>
 <script src="viewer.js"></script>
+<script src="section.js"></script>
 </body>
 </html>
